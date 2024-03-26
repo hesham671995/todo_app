@@ -10,7 +10,7 @@ export class TodoController {
   constructor(private readonly todoService: TodoService) { }
 
   // Start Create Todo Endpoint
-  @Post("create")  
+  @Post("create")
   @UseGuards(JwtAuthGuard)
   async create(@Body() createTodoDto: CreateTodoDto, @Request() request) {
     let userId = await request.user.userId; // get user id
@@ -70,4 +70,20 @@ export class TodoController {
   remove(@Param('id') id: string) {
     return this.todoService.remove(+id);
   }
+
+
+  // Start Get All Todos Endpoint
+
+  @Get("getAll")
+  getAllTodos(): any {
+    return "all todos";
+    // return await this.todoService.findAllTodos();
+  }
+
+  // End Get All Todos Endpoint
+
+  /* @Get("test")
+   async test() : Promise<any> {
+     return await "test function";
+   } */
 }

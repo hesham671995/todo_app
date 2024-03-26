@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Todo } from './entities/todo.entity';
 import { TodoRepository } from './repo/todo.repository';
 import { UserService } from 'src/user/user.service';
-import { User } from 'src/user/entities/user.entity'; 
+import { User } from 'src/user/entities/user.entity';
 import { UserRepository } from 'src/user/repo/user.repository';
 
 // ADD TODO BASED ON USER ID 
@@ -116,4 +116,14 @@ export class TodoService {
   remove(id: number) {
     return `This action removes a #${id} todo`;
   }
+
+  // Start Get All Todos Endpoint
+
+  async findAllTodos() : Promise<Todo[]> {
+    return await this.todoRepository.find({
+      relations: ['user']
+    });
+  }
+
+  // End Get All Todos Endpoint
 }

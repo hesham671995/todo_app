@@ -71,12 +71,11 @@ export class TodoController {
     return this.todoService.remove(+id);
   }
 
-
   // Start Get All Todos Endpoint
 
   @Get("getAll")
-  getAllTodos(): any {
-    return "all todos";
+  async getAllTodos(): Promise<any> {
+    return await "all todos";
     // return await this.todoService.findAllTodos();
   }
 

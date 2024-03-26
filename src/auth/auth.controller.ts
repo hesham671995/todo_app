@@ -17,14 +17,14 @@ export class AuthController {
   }
   // End Login User Endpoint
 
-  @Post('logout')
+  /* @Post('logout')
   @UseGuards(JwtAuthGuard)
   async logout(@Request() request) : Promise<any> {
       console.log(request.headers.authorization.slice(7));
       return {
         "message" : "user logged out successfully"
       }
-  }
+  } */
 
   @Get('test')
   @UseGuards(JwtAuthGuard)

@@ -12,7 +12,7 @@ export interface UserRepository extends Repository<User> {
 export const CustomUserRepository : Pick<UserRepository, any> = {
 
     getUserByEmail(this: Repository<User>, email) {
-        return this.findOne({ where: { email } });
+       return this.findOne({ where: { email } });
     }, // custom method in user repository to get user by email
 
 };

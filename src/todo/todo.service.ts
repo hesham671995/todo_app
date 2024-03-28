@@ -119,7 +119,7 @@ export class TodoService {
 
   // Start Get All Todos Endpoint
 
-  async findAllTodos() : Promise<Todo[]> {
+  async findAllTodos(): Promise<Todo[]> {
     return await this.todoRepository.find({
       relations: ['user']
     });

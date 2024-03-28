@@ -173,7 +173,7 @@ export class TodoService {
       throw new HttpException('Todo Not Found', HttpStatus.NOT_FOUND);
     } // Check If Todo Exists
     if (todo.user.id != userId) {
-      throw new ForbiddenException('You dont have access to update this todo');
+      throw new ForbiddenException('You dont have access to delete this todo');
     }
     return this.todoRepository.delete(id);
   }

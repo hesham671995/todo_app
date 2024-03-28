@@ -4,6 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { TodoModule } from './todo/todo.module';
 import { AuthModule } from './auth/auth.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { CronJobService } from './cron.job';
 
 @Module({
   imports: [
@@ -29,8 +31,9 @@ import { AuthModule } from './auth/auth.module';
     UserModule,
     TodoModule,
     AuthModule,
+    ScheduleModule.forRoot()
   ],
   controllers: [],
-  providers: [],
+  providers: [CronJobService],
 })
 export class AppModule { }

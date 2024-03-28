@@ -113,17 +113,57 @@ export class TodoService {
 
   // End Update Specific Todo
 
+  // Start Get ALl Todos Endpoint
+
+  async getAllTodos(): Promise<Todo[]> {
+
+    const todos = await this.todoRepository.find({
+      relations: ['user']
+    });
+
+    // Delete user password in todo collection
+    todos.forEach(todo => delete todo.user.password);
+
+    return todos;
+
+  }
+
+  // End Get All Todos Endpoint
+
+  // Start Get All Completed Todos Endpoint
+
+  async getAllCompletedTodos(): Promise<Todo[]> {
+    const completedTodos = await this.todoRepository.find({
+      relations: ['user'],
+      where: {
+        completed: true
+      }
+    });
+    completedTodos.forEach(completedTodo => delete completedTodo.user.password);
+
+    return completedTodos;
+  }
+
+  // End Get All Completed Todos Endpoint
+
+  // Start Get All Not Completed Todos Endpoint
+
+  async getAllNotCompletedTodos(): Promise<Todo[]> {
+    const notCompletedTodos = await this.todoRepository.find({
+      relations: ['user'],
+      where: {
+        completed: false
+      }
+    });
+    notCompletedTodos.forEach(notCompletedTodo => delete notCompletedTodo.user.password);
+
+    return notCompletedTodos;
+  }
+
+  // End Get All Not Completed Todos Endpoint
+
   remove(id: number) {
     return `This action removes a #${id} todo`;
   }
 
-  // Start Get All Todos Endpoint
-
-  async findAllTodos(): Promise<Todo[]> {
-    return await this.todoRepository.find({
-      relations: ['user']
-    });
-  }
-
-  // End Get All Todos Endpoint
 }

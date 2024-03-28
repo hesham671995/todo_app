@@ -28,11 +28,6 @@ export class TodoController {
   }
   // End Get All User Todos
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.todoService.findOne(+id);
-  }
-
   // Start Mark Todo As Completed
 
   @Patch('updateTodo/:id')
@@ -66,23 +61,42 @@ export class TodoController {
 
   // End Update Specific Todo 
 
+  // Start Get All Todos Endpoint
+
+  @Get('getAll')
+  async getAllTodos(): Promise<Todo[]> {
+    return await this.todoService.getAllTodos();
+  }
+
+  // End Get All Todos Endpoint
+
+  // Start Get All Completed Todos
+
+  @Get('getAllCompletedTodos')
+  async getAllCompletedTodos() : Promise<Todo[]> {
+      return await this.todoService.getAllCompletedTodos();
+  }
+
+  // End Get All Completed Todos
+
+  // Start Get All Not Completed Todos
+
+  @Get('getAllNotCompletedTodos')
+  async getAllNotCompletedTodos() : Promise<Todo[]> {
+     return await this.todoService.getAllNotCompletedTodos();
+  }
+
+  // End Get All Not Completed Todos
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return id;
+    return this.todoService.findOne(+id);
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.todoService.remove(+id);
   }
 
-  // Start Get All Todos Endpoint
-
-  @Get("getAll")
-  async getAllTodos(): Promise<any> {
-    return await "all todos";
-    // return await this.todoService.findAllTodos();
-  }
-
-  // End Get All Todos Endpoint
-
-  /* @Get("test")
-   async test() : Promise<any> {
-     return await "test function";
-   } */
 }

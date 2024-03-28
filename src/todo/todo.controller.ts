@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, Put, ParseIntPipe } from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
@@ -73,8 +73,8 @@ export class TodoController {
   // Start Get All Completed Todos
 
   @Get('getAllCompletedTodos')
-  async getAllCompletedTodos() : Promise<Todo[]> {
-      return await this.todoService.getAllCompletedTodos();
+  async getAllCompletedTodos(): Promise<Todo[]> {
+    return await this.todoService.getAllCompletedTodos();
   }
 
   // End Get All Completed Todos
@@ -82,17 +82,20 @@ export class TodoController {
   // Start Get All Not Completed Todos
 
   @Get('getAllNotCompletedTodos')
-  async getAllNotCompletedTodos() : Promise<Todo[]> {
-     return await this.todoService.getAllNotCompletedTodos();
+  async getAllNotCompletedTodos(): Promise<Todo[]> {
+    return await this.todoService.getAllNotCompletedTodos();
   }
 
   // End Get All Not Completed Todos
 
+  // Start Get Specific Todo Endpoint
+
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return id;
-    return this.todoService.findOne(+id);
+  async findOne(@Param('id', ParseIntPipe) id: string) {
+    return await this.todoService.findOne(+id);
   }
+
+  // End Get Specific Todo Endpoint
 
   // Start Remove Todo Endpoint
 
@@ -100,10 +103,10 @@ export class TodoController {
   @UseGuards(JwtAuthGuard)
   async remove(@Param('id') id: string, @Request() request) {
     let userId = request.user.userId; // get user id 
-    let deletedTodo =  await this.todoService.remove(+id,userId);
-    if(deletedTodo.affected) {
+    let deletedTodo = await this.todoService.remove(+id, userId);
+    if (deletedTodo.affected) {
       return {
-        "message" : "Todo Deleted Successfully",
+        "message": "Todo Deleted Successfully",
       }
     }
   }

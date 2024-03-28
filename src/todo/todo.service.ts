@@ -60,9 +60,23 @@ export class TodoService {
 
   // End Get All User Todos
 
-  findOne(id: number) {
-    return `This action returns a #${id} todo`;
+  // Start Get Specific Todo Endpoint
+
+  async findOne(id: number) {
+    let todo = await this.todoRepository.findOne({
+      relations: ['user'],
+      where: {
+        id: id
+      }
+    });
+    if (!todo) {
+      throw new HttpException('Todo Not Found', HttpStatus.NOT_FOUND);
+    } // Check If Todo Exists
+    delete todo.user.password;
+    return todo;
   }
+
+  // End Get Specific Todo Endpoint
 
   // Start Mark Todo As Completed
 
@@ -164,7 +178,7 @@ export class TodoService {
 
   // Start Remove Todo Endpoint
 
-  async remove(id: number, userId : number) {
+  async remove(id: number, userId: number) {
     let todo = await this.todoRepository.findOne({
       where: { id: id },
       relations: ['user']

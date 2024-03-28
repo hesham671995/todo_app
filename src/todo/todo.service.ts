@@ -162,8 +162,22 @@ export class TodoService {
 
   // End Get All Not Completed Todos Endpoint
 
-  remove(id: number) {
-    return `This action removes a #${id} todo`;
+  // Start Remove Todo Endpoint
+
+  async remove(id: number, userId : number) {
+    let todo = await this.todoRepository.findOne({
+      where: { id: id },
+      relations: ['user']
+    });
+    if (!todo) {
+      throw new HttpException('Todo Not Found', HttpStatus.NOT_FOUND);
+    } // Check If Todo Exists
+    if (todo.user.id != userId) {
+      throw new ForbiddenException('You dont have access to update this todo');
+    }
+    return this.todoRepository.delete(id);
   }
+
+  // End Remove Todo Endpoint
 
 }

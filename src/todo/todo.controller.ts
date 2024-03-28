@@ -94,9 +94,20 @@ export class TodoController {
     return this.todoService.findOne(+id);
   }
 
+  // Start Remove Todo Endpoint
+
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.todoService.remove(+id);
+  @UseGuards(JwtAuthGuard)
+  async remove(@Param('id') id: string, @Request() request) {
+    let userId = request.user.userId; // get user id 
+    let deletedTodo =  await this.todoService.remove(+id,userId);
+    if(deletedTodo.affected) {
+      return {
+        "message" : "Todo Deleted Successfully",
+      }
+    }
   }
+
+  // End Remove Todo Endpoint
 
 }

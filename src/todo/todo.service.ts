@@ -160,6 +160,27 @@ export class TodoService {
 
   // End Get All Completed Todos Endpoint
 
+  // Start Get All Completed Todos For Specific User
+
+  async getAllAuthenticatedUserCompletedTodos(userId: number): Promise<Todo[]> {
+
+    const userCompletedTodos = await this.todoRepository.find({
+      relations: ['user'],
+      where: {
+        user: {
+          id: userId
+        },
+        completed: true,
+      }
+    });
+
+    userCompletedTodos.forEach(userCompletedTodo => delete userCompletedTodo.user.password);
+
+    return userCompletedTodos;
+  }
+
+  // End Get All Completed Todos For Specific User
+
   // Start Get All Not Completed Todos Endpoint
 
   async getAllNotCompletedTodos(): Promise<Todo[]> {

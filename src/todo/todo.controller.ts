@@ -83,7 +83,7 @@ export class TodoController {
 
   @Get('getAllUserCompletedTodos')
   @UseGuards(JwtAuthGuard)
-  async getAllUserCompletedTodos(@Request() request) : Promise<Todo[]> {
+  async getAllUserCompletedTodos(@Request() request): Promise<Todo[]> {
     let userId = Number(request.user.userId);
     return await this.todoService.getAllAuthenticatedUserCompletedTodos(userId);
   }
@@ -94,7 +94,7 @@ export class TodoController {
 
   @Get('getAllUserNotCompletedTodos')
   @UseGuards(JwtAuthGuard)
-  async getAllUserNotCompletedTodos(@Request() request) : Promise<Todo[]> {
+  async getAllUserNotCompletedTodos(@Request() request): Promise<Todo[]> {
     let userId = Number(request.user.userId);
     return await this.todoService.getAllAuthenticatedUserNotCompletedTodos(userId);
   }

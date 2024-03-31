@@ -5,11 +5,11 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 
 @Controller('users')
-export class UserController { 
-  constructor(private readonly userService: UserService) {}
+export class UserController {
+  constructor(private readonly userService: UserService) { }
 
   @Post("create")
-  async create(@Body(ValidationPipe) createUserDto: CreateUserDto) : Promise<User> {
+  async create(@Body(ValidationPipe) createUserDto: CreateUserDto): Promise<User> {
     return await this.userService.create(createUserDto);
   } // create new user
 
@@ -18,26 +18,28 @@ export class UserController {
     return await this.userService.findAll();
   } // get all users
 
- /* @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
-  } */
+  /* @Get(':id')
+   findOne(@Param('id') id: string) {
+     return this.userService.findOne(+id);
+   } */
 
   @Get("searchEmail/:email")
-  async findUserByEmail(@Param('email') email : string) {
-     return await this.userService.findUserByEmail(email);
+  async findUserByEmail(@Param('email') email: string) {
+    return await this.userService.findUserByEmail(email);
   } // find user by email
 
- /* @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
-  } */
+  /* @Patch(':id')
+   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+     return this.userService.update(+id, updateUserDto);
+   } */
+
+  // Start Remove User Endpoint
 
   @Delete('deleteUser/:id')
-  async remove(@Param('id') id: string) {
-    return await this.userService.remove(+id);
+  async remove(@Param('id') id: string): Promise<any> {
+    return await this.userService.removeUser(+id);
   } // delete user
 
+  // End Remove User Endpoint
 
-  
 }

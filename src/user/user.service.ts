@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -17,13 +17,13 @@ export class UserService {
   constructor(
 
     // Inject User Repository With Custom Methods
-    @InjectRepository(User) 
-    private readonly userRepository : UserRepository,
+    @InjectRepository(User)
+    private readonly userRepository: UserRepository,
 
-  ) {}
+  ) { }
 
-  async create(createUserDto: CreateUserDto) : Promise<User> {
-    let user : User = await new User();
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    let user: User = await new User();
 
     user.firstName = createUserDto.firstName;
     user.lastName = createUserDto.lastName;
@@ -40,23 +40,39 @@ export class UserService {
     return await this.userRepository.find();
   } // get all users
 
- async findOne(id: number) {
+  async findOne(id: number) {
     return await this.userRepository.findOne({
-      where : {
-        id : id 
+      where: {
+        id: id
       }
     });
-  } 
+  }
 
-  async findUserByEmail(email : string) : Promise<User> {
-     return await this.userRepository.getUserByEmail(email);
+  async findUserByEmail(email: string): Promise<User> {
+    return await this.userRepository.getUserByEmail(email);
   } // find user by email
 
   /* update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   } */
 
-  async remove(id: number) {
+  // Start Remove User Endpoint
+
+  async removeUser(id: number): Promise<any> {
+    let user: User = await this.userRepository.findOne({
+      where: {
+        id: id
+      }
+    });
+
+    if (!user) {
+      throw new HttpException("User Not Found", HttpStatus.NOT_FOUND);
+    } // throw exception if user not found
+
     return await this.userRepository.delete(id);
+
   } // delete user
+
+  // End Remove User Endpoint
+
 }

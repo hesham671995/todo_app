@@ -18,8 +18,11 @@ export class Todo {
    completed: boolean;
 
    // Many todos can belong to single user
-   @ManyToOne(() => User, (user) => user.todos , { cascade : true } )
-   @JoinColumn({ name : 'user_id' }) 
+   @ManyToOne(() => User, (user) => user.todos, {
+      cascade: true,
+      onDelete: "CASCADE"
+   })
+   @JoinColumn({ name: 'user_id' })
    user: User;
 
 }

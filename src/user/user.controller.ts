@@ -6,6 +6,7 @@ import { User } from './entities/user.entity';
 
 @Controller('users')
 export class UserController {
+  
   constructor(private readonly userService: UserService) { }
 
   @Post("create")

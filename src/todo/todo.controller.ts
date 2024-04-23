@@ -4,13 +4,17 @@ import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Todo } from './entities/todo.entity';
+import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 
 @Controller('todos')
+@ApiTags("Todo")
+
 export class TodoController {
   constructor(private readonly todoService: TodoService) { }
 
   // Start Create Todo Endpoint
   @Post("create")
+  @ApiSecurity("JWT-auth")
   @UseGuards(JwtAuthGuard)
   async create(@Body() createTodoDto: CreateTodoDto, @Request() request) {
     let userId = await request.user.userId; // get user id
@@ -20,6 +24,7 @@ export class TodoController {
 
   // Start Get All User Todos
   @Get('user_todos')
+  @ApiSecurity("JWT-auth")
   @UseGuards(JwtAuthGuard)
   async findAllUserTodos(@Request() request) {
     console.log(request.session);
@@ -31,6 +36,7 @@ export class TodoController {
   // Start Mark Todo As Completed
 
   @Patch('updateTodo/:id')
+  @ApiSecurity("JWT-auth")
   @UseGuards(JwtAuthGuard)
   async markTodoAsCompleted(@Param('id') id: string, @Request() request): Promise<any> {
     let userId = request.user.userId; // get user id
@@ -46,6 +52,7 @@ export class TodoController {
   // Start Update Specific Todo
 
   @Patch('updateAllTodo/:id')
+  @ApiSecurity("JWT-auth")
   @UseGuards(JwtAuthGuard)
   async updateTodo(
     @Param('id') id: string,
@@ -82,6 +89,7 @@ export class TodoController {
   // Start Get All Completed Todos For Specific User
 
   @Get('getAllUserCompletedTodos')
+  @ApiSecurity("JWT-auth")
   @UseGuards(JwtAuthGuard)
   async getAllUserCompletedTodos(@Request() request): Promise<Todo[]> {
     let userId = Number(request.user.userId);
@@ -93,6 +101,7 @@ export class TodoController {
   // Start Get All Not Completed Todos For Specific User
 
   @Get('getAllUserNotCompletedTodos')
+  @ApiSecurity("JWT-auth")
   @UseGuards(JwtAuthGuard)
   async getAllUserNotCompletedTodos(@Request() request): Promise<Todo[]> {
     let userId = Number(request.user.userId);
@@ -122,6 +131,7 @@ export class TodoController {
   // Start Remove Todo Endpoint
 
   @Delete(':id')
+  @ApiSecurity("JWT-auth")
   @UseGuards(JwtAuthGuard)
   async remove(@Param('id') id: string, @Request() request) {
     let userId = request.user.userId; // get user id 

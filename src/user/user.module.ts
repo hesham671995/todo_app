@@ -5,9 +5,10 @@ import { TypeOrmModule, getDataSourceToken, getRepositoryToken } from '@nestjs/t
 import { User } from './entities/user.entity';
 import { CustomUserRepository } from './repo/user.repository';
 import { DataSource } from 'typeorm';
+import { EmailModule } from 'src/email/email.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
+  imports: [TypeOrmModule.forFeature([User]) , EmailModule],
   controllers: [UserController],
   providers: [
     {

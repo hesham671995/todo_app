@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { UserRepository } from './repo/user.repository';
 import { Constants } from 'src/utils/constants';
+import { EmailService } from 'src/email/email.service';
 
 // FIND ALL USERS
 // ADD USER
@@ -20,6 +21,9 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepository: UserRepository,
 
+    // Inject Email Service
+    private readonly emailService : EmailService,
+
   ) { }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -32,6 +36,10 @@ export class UserService {
     user.role = Constants.ROLES.NORMAL_ROLE;
 
     await this.userRepository.save(user);
+
+    // send welcome email to user
+    await this.emailService.sendUserWelcomeEmail(user);
+
     delete user.password;
     return user;
   } // create new user

@@ -6,6 +6,7 @@ import { TodoModule } from './todo/todo.module';
 import { AuthModule } from './auth/auth.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { CronJobService } from './cron.job';
+import { EmailModule } from './email/email.module';
 
 @Module({
   imports: [
@@ -14,7 +15,9 @@ import { CronJobService } from './cron.job';
       envFilePath: ['.local.env']
     }),
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
+      imports: [ConfigModule.forRoot({
+        isGlobal : true
+      })],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: "postgres",
@@ -31,7 +34,8 @@ import { CronJobService } from './cron.job';
     UserModule,
     TodoModule,
     AuthModule,
-    ScheduleModule.forRoot()
+    ScheduleModule.forRoot(),
+    EmailModule
   ],
   controllers: [],
   providers: [CronJobService],
